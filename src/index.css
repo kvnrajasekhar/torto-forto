@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #ddb892;
+}
+
+/* index.css */
+.nav-link {
+    color: #4a4a4a;
+    /* Default text color */
+    padding: 8px 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #d66;
+    /* Highlight background */
+    color: white;
+    /* Highlight text color */
+    border-radius: 4px;
+    /* Optional: rounded corners */
+}
+
+
+/* Container for Testimonials */
+div#testimonials-container {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    /* Hide overflowing testimonials */
+    width: 100%;
+    /* Set the container width */
+    position: relative;
+     
+}
+
+/* Testimonials Wrapper */
+div#testimonials {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    /* Adjust width automatically based on content */
+    animation: slide 150s linear infinite;
+    
+}
+
+/* Animation for Sliding */
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Pause animation on hover */
+div#testimonials div:hover {
+    animation-play-state: paused;
+}
+
+/* Individual Testimonial Style */
+div#testimonials>div {
+    flex: 0 0 auto;
+    /* Prevent items from shrinking */
+    margin: 0 16px;
+    /* Add spacing between testimonials */
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-color:#f2cc8f;
+}
+
+/* Add a smooth transition when animation restarts */
+div#testimonials-container {
+    will-change: transform;
+}
