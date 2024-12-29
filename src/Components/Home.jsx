@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
@@ -6,9 +5,8 @@ import Footer from './Footer';
 import FeaturedSection from './FeaturedSection';
 
 function Home() {
-    // const [location, setLocation] = useState(null);
-    // const [error, setError] = useState(null);
-
+    const [location, setLocation] = useState(null);
+    const [error, setError] = useState(null);
     const [isPaused, setIsPaused] = useState(false);
 
     const testimonials = [
@@ -30,33 +28,51 @@ function Home() {
     ];
 
     useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setLocation({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    });
-                },
-                (err) => {
-                    setError(err.message);
-                }
-            );
-        } else {
+        console.log('Attempting to fetch geolocation...');
+
+        // Check if geolocation is supported
+        if (!navigator.geolocation) {
             setError('Geolocation is not supported by this browser.');
+            return;
         }
+
+        // Requesting location from the browser
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                console.log('Location retrieved successfully:', position);
+                setLocation({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+            },
+            (err) => {
+                console.log('Error retrieving location:', err);
+
+                // Handle specific error cases
+                if (err.code === err.PERMISSION_DENIED) {
+                    setError('Enable location access.');
+                } else if (err.code === err.POSITION_UNAVAILABLE) {
+                    setError('Location information is unavailable.');
+                } else if (err.code === err.TIMEOUT) {
+                    setError('The request to get user location timed out. Please try again.');
+                } else {
+                    setError('An unknown error occurred while fetching location.');
+                }
+            }
+        );
     }, []);
+
 
     return (
         <div className="min-h-screen bg-[#ddb892]">
             {/* Navigation */}
-            <Navbar />
+            <Navbar location={location} error={error} />
 
             {/* Hero Section */}
-            <section id="home" className="relative" >
-                <div className="w-full h-[850px] ">
+            <section id="home" className="relative">
+                <div className="w-full h-[850px]">
                     <img
-                        src="./src/assets/main.png "
+                        src="./src/assets/main.png"
                         alt="Hero"
                         className="w-full h-full object-cover"
                     />
@@ -73,25 +89,10 @@ function Home() {
                 </div>
             </section>
 
-            {/* Geolocation Section */}
-            <section className="bg-gray-100 py-12">
-                <div className="max-w-7xl mx-auto px-4 text-center">
-                    <h2 className="text-2xl font-bold text-gray-800">Your Location</h2>
-                    {location ? (
-                        <p className="text-gray-700 mt-2">
-                            Latitude: {location.latitude}, Longitude: {location.longitude}
-                        </p>
-                    ) : (
-                        <p className="text-red-500 mt-2">{error || 'Accessing your location...'}</p>
-                    )}
-                </div>
-            </section>
-
             {/* Featured Cakes */}
             <FeaturedSection />
 
-            {/* Testimonials */}
-
+            {/* Testimonials Section */}
             <section id="testimonials-container" className="bg-[#bbbbb9] py-12 overflow-hidden">
                 <div
                     id="testimonials"
@@ -116,6 +117,7 @@ function Home() {
                     ))}
                 </div>
             </section>
+
             <Footer />
         </div>
     );
