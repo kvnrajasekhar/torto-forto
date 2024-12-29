@@ -38,7 +38,7 @@ function App() {
           <Route path="/account/orders" element={<Orders />} />
           <Route path="/cakes/:featureType" element={<CakeListWrapper />} />
           <Route path="/checkout/:RequestID" element={<Checkout />} />
-          <Route path='/cakeitem/:cakeId' element={<CakeItem /> } />
+          <Route path='/cakeitem/:id' element={<CakeItem /> } />
         </Routes>
       </div>
     </Router>
