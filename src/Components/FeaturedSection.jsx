@@ -9,7 +9,7 @@ function FeaturedSection() {
         { id: 5, name: 'Graduation', image: './src/assets/featured section/5.jpg' },
         { id: 6, name: 'Christmas', image: './src/assets/featured section/6.jpg' },
         { id: 7, name: 'Halloween', image: './src/assets/featured section/7.jpg' },
-        { id: 8, name: 'New Year', image: './src/assets/featured section/8.jpg' },
+        { id: 8, name: 'NewYear', image: './src/assets/featured section/8.jpg' },
     ];
 
     return (

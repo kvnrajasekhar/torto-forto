@@ -37,7 +37,12 @@ const Shop = () => {
 
   const handleFilterChange = (filterType, value) => {
     if (filterType === "toppings") {
-      setFilters((prev) => ({ ...prev, toppings: [...value] }));
+      setFilters((prev) => ({
+        ...prev,
+        toppings: prev.toppings.includes(value)
+          ? prev.toppings.filter((topping) => topping !== value)
+          : [...prev.toppings, value],
+      }));
     } else {
       setFilters((prev) => ({ ...prev, [filterType]: value }));
     }
@@ -54,42 +59,41 @@ const Shop = () => {
     }
   };
 
-// Simulate API call delay
+  // Simulate API call delay
 
 
   const handleGenerateImage = async () => {
+    const BASE_URL = import.meta.env.BASE_URL;
+    console.log(BASE_URL);
+    setLoading(true);
     console.log("Generating AI image...");
-    // Logic to generate image based on filters
-  try {
-    // Construct prompt from all filters
-    // const prompt = `A ${filters.cakeWeight} ${filters.cakeShape} ${filters.tiers} cake for ${filters.eventType} made with ${filters.breadType} and ${filters.flavor} flavor, decorated with ${filters.toppings.join(", ")}. ${filters.preferredText ? `Text on cake: ${filters.preferredText}` : ""} ${imagePrompt}`.trim();
-    const prompt = `A realistic and practical cake design for ${filters.eventType} , made with ${filters.breadType}. The cake should weigh ${filters.cakeWeight} kg and have a ${filters.cakeShape}. It will have a  ${filters.flavor}flavor, with ${filters.tiers} tiers, and the Preferred text on the cake is  ${filters.preferredText ? `${filters.preferredText}`:""} written on it. Add ${filters.toppings.join(", ")} as decorations. Include the following custom details: ${imagePrompt}. The design should be simple enough for a baker to create while matching the given requirements.`;
-    const response = await fetch('http://user.frostiq.me/image/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ prompt })
-    });
+    try {
+      // Construct prompt from all filters
+      // const prompt = `A ${filters.cakeWeight} ${filters.cakeShape} ${filters.tiers} cake for ${filters.eventType} made with ${filters.breadType} and ${filters.flavor} flavor, decorated with ${filters.toppings.join(", ")}. ${filters.preferredText ? `Text on cake: ${filters.preferredText}` : ""} ${imagePrompt}`.trim();
+      const prompt = `A realistic and practical cake design for ${filters.eventType} , made with ${filters.breadType}. The cake should weigh ${filters.cakeWeight} kg and have a ${filters.cakeShape}. It will have a  ${filters.flavor}flavor, with ${filters.tiers} tiers, and the Preferred text on the cake is  ${filters.preferredText ? `${filters.preferredText}` : ""} written on it. Add ${filters.toppings.join(", ")} as decorations. Include the following custom details: ${imagePrompt}. The design should be simple enough for a baker to create while matching the given requirements.`;
+      const response = await fetch(`http://user.frostiq.me/image/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt })
+      });
 
-    if (!response.ok) {
-      throw new Error('Image generation failed');
+      if (!response.ok) {
+        throw new Error('Image generation failed');
+      }
+      const imageData = await response.json();
+      console.log(imageData);
+
+      setImage(<img src={imageData.imageUrl} alt="Generated Cake" />);
+
+    } catch (error) {
+      console.error('Error generating image:', error);
     }
-    const imageData = await response.json();
-    console.log(imageData);
-    
-    setImage(<img src={imageData.imageUrl} alt="Generated Cake" />);
-
-  } catch (error) {
-    console.error('Error generating image:', error);
-  }
-        
-  };
-
-  const handleContinue = () => {
-    navigate("/market"); // Redirect to market section
 
   };
+
+
 
   const handleRegenerateImage = () => {
     setLoading(true);
@@ -230,72 +234,42 @@ const Shop = () => {
               className="bg-blue-500 text-white px-4 py-2 rounded-r"
               onClick={handleGenerateImage}
             >
-              Generate Image
-            </button>
-          </div>
-
-          {/* Loading Animation or Image */}
-          <div className="mb-6">
-            {loading ? (
-              <div className="flex items-center justify-center h-screen">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
-              </div>
-            ) : image ? (
-              <div className="border p-4 rounded shadow-sm">{image}</div>
-            ) : (
-              <div className="border p-4 rounded shadow-sm">
-                <p>Image will be generated here...</p>
-              </div>
-            )}
-          </div>
-
-        </div>
-
-        {/* Input and Image Placeholder */}
-        <div className="mb-4 flex items-center">
-          <input
-            type="text"
-            className="flex-grow border border-gray-300 p-2 rounded-l"
-            placeholder="Enter prompt for image"
-            value={imagePrompt}
-            onChange={(e) => setImagePrompt(e.target.value)}
-          />
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-r"
-            onClick={handleGenerateImage}
-          >
             Generate Image
           </button>
-        </div>
+      </div>
 
-        {/* Image Placeholder */}
-        <div className="mb-6">
-          {image ? (
-            <div className="border p-4 rounded shadow-sm">{image}</div>
-          ) : (
-            <div className="border p-4 rounded shadow-sm">
-              <p>Image will be generated here...</p>
-            </div>
-          )}
-        </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 mt-6">
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleGenerateImage}
-          >
-            Regenerate
-          </button>
-          <button
-            className="bg-green-500 text-white px-4 py-2 rounded"
-            onClick={handleContinue}
-          >
-            Continue
-          </button>
-        </div>
-      </main>
-    </div>
+      {/* Loading Animation or Image */}
+      <div className="mb-6">
+        {loading ? (
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+        ) : image ? (
+          <div className="border p-4 rounded shadow-sm">{image}</div>
+        ) : (
+          <div className="border p-4 rounded shadow-sm">
+            <p>Image will be generated here...</p>
+          </div>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex gap-4 mt-6">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+          onClick={handleRegenerateImage}
+        >
+          Regenerate
+        </button>
+        <button
+          className="bg-green-500 text-white px-4 py-2 rounded"
+          onClick={handleContinue}
+        >
+          Continue
+        </button>
+      </div>
+    </main >
+
+      </div >
 
     </>
   );
