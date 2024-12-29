@@ -16,7 +16,6 @@ import About from './Components/About.jsx';
 import Cart from './Components/Cart.jsx';
 import CakeItem from './Components/CakeItem.jsx';
 
-
 function App() {
   return (
     <Router>
@@ -31,14 +30,14 @@ function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/order" element={<div className="text-center">Order Now Page</div>} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/account/chat" element={<Chat />} />
-          <Route path="/account/profile" element={<Profile />} />
-          <Route path="/account/marketplace" element={<MarketPlace />} />
-          <Route path="/account/notifications" element={<Notifications />} />
-          <Route path="/account/orders" element={<Orders />} />
+          <Route path="/account/:userId/chat" element={<Chat />} />
+          <Route path="/account/:userId/profile" element={<Profile />} />
+          <Route path="/account/:userId/marketplace" element={<MarketPlace />} />
+          <Route path="/account/:userId/notifications" element={<Notifications />} />
+          <Route path="/account/:userId/orders" element={<Orders />} />
           <Route path="/cakes/:featureType" element={<CakeListWrapper />} />
           <Route path="/checkout/:RequestID" element={<Checkout />} />
-          <Route path='/cakeitem/:cakeId' element={<CakeItem /> } />
+          <Route path="/cakeitem/:cakeId" element={<CakeItem />} />
         </Routes>
       </div>
     </Router>

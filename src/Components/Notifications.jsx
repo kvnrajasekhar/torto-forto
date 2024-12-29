@@ -1,31 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const Notifications= () => {
+const Notifications = () => {
     const location = useLocation();
-    const [notifications, setNotifications] = useState([
-        {
-            id: 1,
-            title: "Order Shipped",
-            message: "Your order #ORD001 has been shipped.",
-            date: "2024-12-28",
-            read: false,
-        },
-        {
-            id: 2,
-            title: "Payment Confirmation",
-            message: "Your payment for #ORD002 is confirmed.",
-            date: "2024-12-27",
-            read: false,
-        },
-        {
-            id: 3,
-            title: "Profile Updated",
-            message: "Your profile information has been successfully updated.",
-            date: "2024-12-26",
-            read: true,
-        },
-    ]);
+    const [notifications, setNotifications] = useState([]);
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            const BASE_URL = import.meta.env.BASE_URL;
+            try {
+                const response = await fetch(`${BASE_URL}/notifications`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch notifications");
+                }
+                const data = await response.json();
+                setNotifications(data);
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            }
+        };
+
+        fetchNotifications();
+    }, []);
 
     const handleMarkAsRead = (id) => {
         setNotifications((notifications) =>

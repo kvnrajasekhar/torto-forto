@@ -1,45 +1,34 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const location = useLocation();
+
+  // Extract user ID from the URL
+  const userId = location.pathname.split("/")[3];
 
   useEffect(() => {
-    // Simulating data fetching from an API
-    setTimeout(() => {
+    // Fetch orders dynamically based on user ID
+    const fetchOrders = async () => {
       try {
-        // Sample Orders Data
-        const fetchedOrders = [
-          {
-            orderId: "12345",
-            eventType: "Wedding",
-            bakeryName: "Sweet Delights Bakery",
-            cost: "$200",
-            dateOrdered: "2024-12-10",
-            orderStatus: "Completed",
-            paymentMode: "Credit Card",
-            cakeImage: "https://via.placeholder.com/150?text=Cake+1", // Placeholder image
-          },
-          {
-            orderId: "67890",
-            eventType: "Birthday",
-            bakeryName: "Delicious Cakes",
-            cost: "$150",
-            dateOrdered: "2024-12-12",
-            orderStatus: "Pending",
-            paymentMode: "Cash on Delivery",
-            cakeImage: "https://via.placeholder.com/150?text=Cake+2", // Placeholder image
-          },
-        ];
-        setOrders(fetchedOrders);
-        setLoading(false);
+        const response = await fetch(`http://localhost:5555/api/orders/${userId}`); // Replace with actual endpoint
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+        const data = await response.json();
+        setOrders(data);
       } catch (err) {
-        setError("Failed to fetch orders");
+        setError(err.message);
+      } finally {
         setLoading(false);
       }
-    }, 2000);
-  }, []);
+    };
+
+    fetchOrders();
+  }, [userId]);
 
   return (
     <div className="max-w-4xl mx-auto py-8 mt-14">
@@ -73,15 +62,14 @@ const Orders = () => {
                   <p><strong>Bakery Name:</strong> {order.bakeryName}</p>
                   <p><strong>Cost:</strong> {order.cost}</p>
                   <p><strong>Date Ordered:</strong> {order.dateOrdered}</p>
-                  <p><strong>Order Status:</strong> 
+                  <p><strong>Order Status:</strong>
                     <span
-                      className={`px-2 py-1 rounded-full text-white ${
-                        order.orderStatus === "Completed"
+                      className={`px-2 py-1 rounded-full text-white ${order.orderStatus === "Completed"
                           ? "bg-green-500"
                           : order.orderStatus === "Pending"
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
-                      }`}
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                        }`}
                     >
                       {order.orderStatus}
                     </span>

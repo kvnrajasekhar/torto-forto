@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const MarketPlace = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -13,8 +12,12 @@ const MarketPlace = () => {
         const fetchOrders = async () => {
             const BASE_URL = import.meta.env.BASE_URL;
             try {
-                const response = await axios.get(`${BASE_URL}/cakereq`); // Update with your API endpoint
-                const parsedOrders = response.data.map((order) => ({
+                const response = await fetch(`${BASE_URL}/cakereq`); // Update with your API endpoint
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const parsedOrders = data.map((order) => ({
                     RequestID: order._id,
                     image: `/api/images/${order.imageId}`,
                     prompt: order.prompt,
@@ -128,3 +131,4 @@ const MarketPlace = () => {
 };
 
 export default MarketPlace;
+    
