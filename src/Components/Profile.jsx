@@ -3,43 +3,48 @@ import { Link, useLocation } from "react-router-dom";
 
 const Profile = () => {
     const location = useLocation();
-    const [profile, setProfile] = useState({
-        name: "",
-        email: "",
-        phone: "",
-    });
+    const [profile, setProfile] = useState(null);
+    const userId = location.pathname.split("/")[3]; // Extract userId from the URL
 
     useEffect(() => {
-        // Simulating fetching user details from the backend
+        // Fetch user details from the backend using the unique userId
         const fetchProfile = async () => {
-            // Replace with actual API call
-            const userDetails = {
-                name: "usename",
-                email: "usermail@gmail.com",
-                phone: "22345678245",
-            };
-            setProfile(userDetails);
+            try {
+                const response = await fetch(`/api/users/${userId}`); // Replace with actual endpoint
+                if (!response.ok) {
+                    throw new Error("Failed to fetch user details");
+                }
+                const userData = await response.json();
+                setProfile(userData);
+            } catch (error) {
+                console.error("Error fetching profile data:", error);
+            }
         };
 
         fetchProfile();
-    }, []);
+    }, [userId]);
 
     const handleResetPassword = () => {
         alert("Password reset link has been sent to your email.");
+        // Implement actual reset password logic
     };
 
     const handleLogout = () => {
         alert("Logged out successfully.");
-        // Add logout logic, e.g., clearing tokens, redirecting to login
+        // Implement logout logic
     };
 
     const menuItems = [
-        { name: "Profile", path: "/account/profile" },
-        { name: "Orders", path: "/account/orders" },
-        { name: "Chat", path: "/account/chat" },
-        { name: "Marketplace", path: "/account/marketplace" },
-        { name: "Notifications", path: "/account/notifications" },
+        { name: "Profile", path: `/account/profile/${userId}` },
+        { name: "Orders", path: `/account/orders/${userId}` },
+        { name: "Chat", path: `/account/chat/${userId}` },
+        { name: "Marketplace", path: `/account/marketplace/${userId}` },
+        { name: "Notifications", path: `/account/notifications/${userId}` },
     ];
+
+    if (!profile) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="flex">
@@ -75,7 +80,13 @@ const Profile = () => {
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="text-gray-600">Phone:</span>
-                            <span className="text-gray-800 font-semibold">{profile.phone}</span>
+                            <span className="text-gray-800 font-semibold">{profile.phoneNumber}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-gray-600">Address:</span>
+                            <span className="text-gray-800 font-semibold">
+                                {`${profile.address.street}, ${profile.address.city}, ${profile.address.state}, ${profile.address.zip}, ${profile.address.country}`}
+                            </span>
                         </div>
                     </div>
                     <div className="mt-6 space-y-4">

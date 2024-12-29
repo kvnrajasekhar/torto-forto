@@ -10,6 +10,7 @@ import Notifications from './Notifications';
 function Account() {
     const [userData, setUserData] = useState(null);
     const location = useLocation();
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -17,6 +18,7 @@ function Account() {
                 const response = await fetch('/api/user'); // Replace with your backend endpoint
                 const data = await response.json();
                 setUserData(data);
+                setUserId(data?.id); // Assuming the unique ID is stored as `id` in the user data
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -25,11 +27,11 @@ function Account() {
     }, []);
 
     const menuItems = [
-        { name: "Profile", path: "/account/profile", icon: FaUser },
-        { name: "Orders", path: "/account/orders", icon: FaShoppingBag },
-        { name: "Chat", path: "/account/chat", icon: FaComments },
-        { name: "Marketplace", path: "/account/marketplace", icon: FaStore },
-        { name: "Notifications", path: "/account/notifications", icon: FaBell },
+        { name: "Profile", path: `/account/${userId}/profile`, icon: FaUser },
+        { name: "Orders", path: `/account/${userId}/orders`, icon: FaShoppingBag },
+        { name: "Chat", path: `/account/${userId}/chat`, icon: FaComments },
+        { name: "Marketplace", path: `/account/${userId}/marketplace`, icon: FaStore },
+        { name: "Notifications", path: `/account/${userId}/notifications`, icon: FaBell },
     ];
 
     function Chat() {
@@ -71,8 +73,8 @@ function Account() {
                         >
                             <div
                                 className={`${message.sender === "User"
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-gray-300 text-gray-800"
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-gray-300 text-gray-800"
                                     } px-4 py-2 rounded-lg max-w-md`}
                             >
                                 {message.content}
@@ -122,16 +124,16 @@ function Account() {
                 </div>
             </div>
 
-            {/* Content Section */} 
+            {/* Content Section */}
             <div className="flex-1 p-8 bg-gray-100">
                 <div className="bg-white p-6 rounded-lg shadow-md h-full">
-                    {/* <Routes>
-                        <Route path="profile" element={<Profile />} />
-                        <Route path="orders" element={<Orders />} />
-                        <Route path="chat" element={<Chat />} />
-                        <Route path="marketplace" element={<Marketplace />} />
-                        <Route path="notifications" element={<Notifications />} />
-                    </Routes> */}
+                    <Routes>
+                        <Route path=":userId/profile" element={<Profile />} />
+                        <Route path=":userId/orders" element={<Orders />} />
+                        <Route path=":userId/chat" element={<Chat />} />
+                        <Route path=":userId/marketplace" element={<Marketplace />} />
+                        <Route path=":userId/notifications" element={<Notifications />} />
+                    </Routes>
                 </div>
             </div>
         </div>
