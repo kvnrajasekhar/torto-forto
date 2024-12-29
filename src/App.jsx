@@ -7,6 +7,8 @@ import Navbar from './Components/Navbar.jsx';
 import Chat from './Components/Chat.jsx';
 import Profile from './Components/Profile.jsx';
 import MarketPlace from './Components/MarketPlace.jsx';
+import Notifications from './Components/Notifications.jsx';
+import Orders from './Components/Orders.jsx';
 
 
 function About() {
@@ -16,10 +18,10 @@ function About() {
 function App() {
   return (
     <Router>
-      <div className="mb-20">
+      <div >
         <Navbar />
       </div>
-      <div className="mt-20">
+      <div >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -30,6 +32,8 @@ function App() {
           <Route path="/account/chat" element={<Chat />} />
           <Route path="/account/profile" element={<Profile />} />
           <Route path="/account/marketplace" element={<MarketPlace />} />
+          <Route path="/account/notifications" element={<Notifications />} />
+          <Route path="/account/orders" element={<Orders />} />
         </Routes>
       </div>
     </Router>

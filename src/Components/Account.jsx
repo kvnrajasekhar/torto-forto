@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FaUser, FaShoppingBag, FaComments, FaStore, FaBell } from "react-icons/fa";
@@ -104,7 +105,7 @@ function Account() {
     return (
         <div className="flex">
             {/* Sidebar */}
-            <div className="w-1/4 bg-gray-800 text-white p-4 h-screen sticky top-0">
+            <div className="w-1/5 bg-gray-800 text-white p-4 h-screen sticky top-0">
                 <h2 className="text-2xl font-bold mb-6">Account</h2>
                 <div className="space-y-4">
                     {menuItems.map((item) => (
@@ -121,16 +122,16 @@ function Account() {
                 </div>
             </div>
 
-            {/* Content Section */}
+            {/* Content Section */} 
             <div className="flex-1 p-8 bg-gray-100">
                 <div className="bg-white p-6 rounded-lg shadow-md h-full">
-                    <Routes>
+                    {/* <Routes>
                         <Route path="profile" element={<Profile />} />
                         <Route path="orders" element={<Orders />} />
                         <Route path="chat" element={<Chat />} />
                         <Route path="marketplace" element={<Marketplace />} />
                         <Route path="notifications" element={<Notifications />} />
-                    </Routes>
+                    </Routes> */}
                 </div>
             </div>
         </div>
