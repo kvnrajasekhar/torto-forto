@@ -1,64 +1,48 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const MarketPlace = () => {
-    const [searchTerm, setSearchTerm] = useState(""); // State for search bar
+    const [searchTerm, setSearchTerm] = useState("");
     const [orders, setOrders] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const sampleOrders = [
-            {
-                RequestID: "ORD001",
-                orderPlacedDate: "2024-12-20",
-                eventType: "Event A",
-                description: "Customer wants a large banner.",
-                cost: 530,
-                image: "https://via.placeholder.com/150",
-            },
-            {
-                RequestID: "ORD002",
-                orderPlacedDate: "2024-12-22",
-                eventType: "Event B",
-                description: "Customer needs custom printing.",
-                cost: 550,
-                image: "https://via.placeholder.com/150",
-            },
-            {
-                RequestID: "ORD003",
-                orderPlacedDate: "2024-12-23",
-                eventType: "Event C",
-                description: "Customer requests gift packaging.",
-                cost: 560,
-                image: "https://via.placeholder.com/150",
-            },
-            {
-                RequestID: "ORD004",
-                orderPlacedDate: "2024-12-24",
-                eventType: "Event D",
-                description: "Customer requests a custom design.",
-                cost: 560,
-                image: "https://via.placeholder.com/150",
-            },
-        ];
-        setOrders(sampleOrders); // Simulating setting data from API response
+        const fetchOrders = async () => {
+            const BASE_URL = import.meta.env.BASE_URL;
+            try {
+                const response = await axios.get(`${BASE_URL}/cakereq`); // Update with your API endpoint
+                const parsedOrders = response.data.map((order) => ({
+                    RequestID: order._id,
+                    image: `/api/images/${order.imageId}`,
+                    prompt: order.prompt,
+                    description: order.description,
+                    status: order.status,
+                    createdAt: new Date(order.createdAt).toLocaleDateString(),
+                }));
+                setOrders(parsedOrders);
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            }
+        };
+
+        fetchOrders();
     }, []);
 
     const handleSearch = (event) => setSearchTerm(event.target.value);
 
-
-
     const handleAccept = (RequestID) => {
-        alert(`Order ${RequestID} Accepted`)
+        alert(`Order ${RequestID} Accepted`);
         navigate(`/checkout/${RequestID}`);
     };
+
     const handleReject = (RequestID) => alert(`Order ${RequestID} Rejected`);
 
     const filteredOrders = orders.filter((order) =>
         order.RequestID.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.eventType.toLowerCase().includes(searchTerm.toLowerCase())
+        order.prompt.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const menuItems = [
@@ -115,15 +99,11 @@ const MarketPlace = () => {
                                 />
                                 <div className="p-6">
                                     <h2 className="text-lg font-bold text-gray-700">RequestID: {order.RequestID}</h2>
-                                    <p className="text-sm text-gray-600">Order Placed: {order.orderPlacedDate}</p>
-                                    <p className="text-sm text-gray-600">Event Type: {order.eventType}</p>
+                                    <p className="text-sm text-gray-600">Prompt: {order.prompt}</p>
                                     <p className="text-sm text-gray-600">Description: {order.description}</p>
+                                    <p className="text-sm text-gray-600">Status: {order.status}</p>
+                                    <p className="text-sm text-gray-600">Created At: {order.createdAt}</p>
                                     <div className="mt-4 flex items-center space-x-4">
-                                        <input
-                                            value={order.cost}
-                                            className="w-28 p-2 border rounded-md"
-                                            placeholder="Cost"
-                                        />
                                         <button
                                             onClick={() => handleAccept(order.RequestID)}
                                             className="bg-green-500 text-white px-6 py-2 rounded-md"

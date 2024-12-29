@@ -14,6 +14,7 @@ import CakeList from './Components/CakeList.jsx';
 import Checkout from './Components/Checkout.jsx';
 import About from './Components/About.jsx';
 import Cart from './Components/Cart.jsx';
+import CakeItem from './Components/CakeItem.jsx';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/account/orders" element={<Orders />} />
           <Route path="/cakes/:featureType" element={<CakeListWrapper />} />
           <Route path="/checkout/:RequestID" element={<Checkout />} />
+          <Route path='/cakeitem/:cakeId' element={<CakeItem /> } />
         </Routes>
       </div>
     </Router>

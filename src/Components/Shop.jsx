@@ -78,7 +78,7 @@ const Shop = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ prompt })
-        
+
       });
 
       if (!response.ok) {
@@ -87,7 +87,7 @@ const Shop = () => {
       const imageData = await response.json();
       console.log(imageData);
       setGeneratedImage(imageData.imageUrl);
-      setDalleImage(imageData);
+      setDalleImage(imageData._id);
 
       setImage(<img src={imageData.imageUrl} alt="Generated Cake" />);
       setLoading(false);
@@ -108,8 +108,14 @@ const Shop = () => {
   };
 
   const handleContinue = () => {
-    navigate("/cakeitem/", { state: { dalleimage } });
+    console.log("Continue to cake item page with image:", dalleimage);
+    if (dalleimage) {
+      navigate(`/cakeitem/${dalleimage}`, { state: { dalleimage } });
+    } else {
+      alert("No image available to proceed");
+    }
   };
+
 
   return (
     <>
@@ -238,40 +244,40 @@ const Shop = () => {
               className="bg-blue-500 text-white px-4 py-2 rounded-r"
               onClick={handleGenerateImage}
             >
-            Generate Image
-          </button>
-      </div>
-
-
-      {/* Loading Animation or Image */}
-      <div className="mb-6">
-        {loading ? (
-          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
-        ) : image ? (
-          <div className="border p-4 rounded shadow-sm">{image}</div>
-        ) : (
-          <div className="border p-4 rounded shadow-sm">
-            <p>Image will be generated here...</p>
+              Generate Image
+            </button>
           </div>
-        )}
-      </div>
 
-      {/* Action Buttons */}
-      <div className="flex gap-4 mt-6">
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={handleRegenerateImage}
-        >
-          Regenerate
-        </button>
-        <button
-          className="bg-green-500 text-white px-4 py-2 rounded"
-          onClick={handleContinue}
-        >
-          Continue
-        </button>
-      </div>
-    </main >
+
+          {/* Loading Animation or Image */}
+          <div className="mb-6">
+            {loading ? (
+              <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+            ) : image ? (
+              <div className="border p-4 rounded shadow-sm">{image}</div>
+            ) : (
+              <div className="border p-4 rounded shadow-sm">
+                <p>Image will be generated here...</p>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-4 mt-6">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+              onClick={handleRegenerateImage}
+            >
+              Regenerate
+            </button>
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded"
+              onClick={handleContinue}
+            >
+              Continue
+            </button>
+          </div>
+        </main >
 
       </div >
 

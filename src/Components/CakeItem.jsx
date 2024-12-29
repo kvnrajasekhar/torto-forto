@@ -1,21 +1,36 @@
 import  { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import props from 'prop-types';
 
-const CakeItem = (props) => {
+
+const CakeItem = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { filters, generatedImage } = location.state || {};
     const [description, setDescription] = useState('');
+    const [prompt, setPrompt] = useState('');
+    const [image, setImage] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
 
-    useEffect(() => {
-        if (!filters || !generatedImage) {
-            navigate('/shop');
-        }
-    }, [filters, generatedImage, navigate]);
+    
+
+    fetch('http://localhost:5555/cakerequest/:id', {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+    }).then(response => response.json()).then(data => { 
+        console.log('Success:', data);
+        setPrompt(data.prompt);
+        setImage(data._id);
+        setImageUrl(data.imageUrl);
+    }).catch((error) => {
+        console.error('Error:', error);
+    });
 
     const handleSubmit = () => {
         // Handle the submission of the description and previous prompt
+       
+        
         console.log('Description:', description);
         fetch('http://localhost:5555/cakerequest', {
             method: 'POST',
@@ -23,9 +38,9 @@ const CakeItem = (props) => {
             'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-            description: description,
-            imageid: props.dalleimage.imageUrl,
-            prompt: props.dalleimage.prompt,
+            Description: description,
+            imageId: image,
+            Prompt: prompt,
             }),
         })
         .then(response => response.json())
@@ -44,7 +59,7 @@ const CakeItem = (props) => {
             <h1 className="text-2xl font-bold mb-4">Cake Item</h1>
             {generatedImage && (
                 <div className="mb-4">
-                    <img src={props.dalleimage.imageUrl} alt="Generated Cake" className="w-full h-auto" />
+                    <img src={imageUrl} alt="Generated Cake" className="w-full h-auto" />
                 </div>
             )}
 
@@ -62,7 +77,7 @@ const CakeItem = (props) => {
                 <textarea
                     className="w-full border border-gray-300 p-2 rounded"
                     rows="4"
-                    value={props.dalleimage.prompt}
+                    value={prompt}
                 />
             </div>
             <button
@@ -75,11 +90,6 @@ const CakeItem = (props) => {
     );
 };
 
-CakeItem.propTypes = {
-    dalleimage: props.shape({
-        prompt: props.string.isRequired,
-        imageUrl: props.string.isRequired,
-    }).isRequired,
-};
+
 
 export default CakeItem;
