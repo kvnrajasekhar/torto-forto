@@ -16,6 +16,9 @@ const Shop = () => {
   const [cakes, setCakes] = useState([]);
   const [image, setImage] = useState(null); // State to store generated image
   const navigate = useNavigate();
+  const [imagePrompt, setImagePrompt] = useState("");
+  const [generatedImage, setGeneratedImage] = useState(null);
+
 
   const fetchCakes = async (appliedFilters) => {
     console.log("Fetching cakes with filters:", appliedFilters);
@@ -67,7 +70,7 @@ const Shop = () => {
   return (
     <>
       <Navbar />
-    <div className="flex mt-12">
+    <div className="flex mt-16">
       {/* Sidebar */}
       <aside className="w-1/4 p-4 bg-gray-100">
         {/* Dropdown Filters */}
@@ -157,15 +160,20 @@ const Shop = () => {
         </div>
 
         {/* Input and Image Placeholder */}
-        <div className="mb-6">
-          <label className="font-medium">Enter Custom Text for Cake Design</label>
+        <div className="mb-4 flex items-center">
           <input
             type="text"
-            className="block w-full mt-2 border border-gray-300 p-2"
-            placeholder="Custom Text"
-            value={filters.preferredText}
-            onChange={(e) => handleFilterChange("preferredText", e.target.value)}
+            className="flex-grow border border-gray-300 p-2 rounded-l"
+            placeholder="Enter prompt for image"
+            value={imagePrompt}
+            onChange={(e) => setImagePrompt(e.target.value)}
           />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-r"
+            onClick={()=>{}}
+          >
+            Generate Image
+          </button>
         </div>
 
         {/* Image Placeholder */}
