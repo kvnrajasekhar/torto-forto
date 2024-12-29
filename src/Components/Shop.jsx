@@ -65,7 +65,7 @@ const Shop = () => {
     // Construct prompt from all filters
     // const prompt = `A ${filters.cakeWeight} ${filters.cakeShape} ${filters.tiers} cake for ${filters.eventType} made with ${filters.breadType} and ${filters.flavor} flavor, decorated with ${filters.toppings.join(", ")}. ${filters.preferredText ? `Text on cake: ${filters.preferredText}` : ""} ${imagePrompt}`.trim();
     const prompt = `A realistic and practical cake design for ${filters.eventType} , made with ${filters.breadType}. The cake should weigh ${filters.cakeWeight} kg and have a ${filters.cakeShape}. It will have a  ${filters.flavor}flavor, with ${filters.tiers} tiers, and the Preferred text on the cake is  ${filters.preferredText ? `${filters.preferredText}`:""} written on it. Add ${filters.toppings.join(", ")} as decorations. Include the following custom details: ${imagePrompt}. The design should be simple enough for a baker to create while matching the given requirements.`;
-    const response = await fetch('http://localhost:5555/image/generate', {
+    const response = await fetch('http://user.frostiq.me/image/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
