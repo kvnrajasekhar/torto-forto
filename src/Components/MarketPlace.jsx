@@ -74,7 +74,7 @@ const MarketPlace = () => {
     return (
         <div className="flex">
             {/* Sidebar */}
-            <div className="w-1/4 bg-gray-800 text-white p-4 h-screen sticky top-0">
+            <div className="w-1/5 bg-gray-800 text-white p-4 h-screen sticky top-0">
                 <h2 className="text-2xl font-bold mb-6">Account</h2>
                 <div className="space-y-4">
                     {menuItems.map((item) => (

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
@@ -52,7 +53,7 @@ function Home() {
             <Navbar />
 
             {/* Hero Section */}
-            <section id="home" className="relative">
+            <section id="home" className="relative" >
                 <div className="w-full h-[850px] ">
                     <img
                         src="./src/assets/main.png "
@@ -73,7 +74,7 @@ function Home() {
             </section>
 
             {/* Geolocation Section */}
-            {/* <section className="bg-gray-100 py-12">
+            <section className="bg-gray-100 py-12">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                     <h2 className="text-2xl font-bold text-gray-800">Your Location</h2>
                     {location ? (
@@ -84,7 +85,7 @@ function Home() {
                         <p className="text-red-500 mt-2">{error || 'Accessing your location...'}</p>
                     )}
                 </div>
-            </section> */}
+            </section>
 
             {/* Featured Cakes */}
             <FeaturedSection />

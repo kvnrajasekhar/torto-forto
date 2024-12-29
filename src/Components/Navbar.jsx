@@ -10,7 +10,7 @@ function Navbar() {
                     <div className="flex space-x-6">
                         <Link to="/" className="nav-link  font-montserrat">Home</Link>
                         <Link to="/about" className="nav-link  font-montserrat">About</Link>
-                        <Link to="/orders" className="nav-link  font-montserrat">Orders</Link>
+                        <Link to="/acoount/orders" className="nav-link  font-montserrat">Orders</Link>
                         <Link to="/account" className="nav-link  font-montserrat">Account</Link>
                         <Link to="/cart" className="nav-link  font-montserrat">Cart</Link>
                         <Link to="/shop" className="nav-link  font-montserrat">Shop</Link>
