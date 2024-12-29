@@ -11,10 +11,10 @@ import MarketPlace from './Components/MarketPlace.jsx';
 import Notifications from './Components/Notifications.jsx';
 import Orders from './Components/Orders.jsx';
 import CakeList from './Components/CakeList.jsx';
+import Checkout from './Components/Checkout.jsx';
+import About from './Components/About.jsx';
+import Cart from './Components/Cart.jsx';
 
-function About() {
-  return <div className="pt-20 text-center">About Page</div>;
-}
 
 function App() {
   return (
@@ -29,13 +29,14 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/account" element={<Account />} />
           <Route path="/order" element={<div className="text-center">Order Now Page</div>} />
-          <Route path="/cart" element={<div className="text-center">Cart Page</div>} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/account/chat" element={<Chat />} />
           <Route path="/account/profile" element={<Profile />} />
           <Route path="/account/marketplace" element={<MarketPlace />} />
           <Route path="/account/notifications" element={<Notifications />} />
           <Route path="/account/orders" element={<Orders />} />
           <Route path="/cakes/:featureType" element={<CakeListWrapper />} />
+          <Route path="/checkout/:RequestID" element={<Checkout />} />
         </Routes>
       </div>
     </Router>

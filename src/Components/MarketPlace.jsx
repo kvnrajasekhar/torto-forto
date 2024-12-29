@@ -1,44 +1,45 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const MarketPlace = () => {
     const [searchTerm, setSearchTerm] = useState(""); // State for search bar
     const [orders, setOrders] = useState([]);
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const sampleOrders = [
             {
-                orderId: "ORD001",
+                RequestID: "ORD001",
                 orderPlacedDate: "2024-12-20",
                 eventType: "Event A",
                 description: "Customer wants a large banner.",
-                cost: 0,
+                cost: 530,
                 image: "https://via.placeholder.com/150",
             },
             {
-                orderId: "ORD002",
+                RequestID: "ORD002",
                 orderPlacedDate: "2024-12-22",
                 eventType: "Event B",
                 description: "Customer needs custom printing.",
-                cost: 0,
+                cost: 550,
                 image: "https://via.placeholder.com/150",
             },
             {
-                orderId: "ORD003",
+                RequestID: "ORD003",
                 orderPlacedDate: "2024-12-23",
                 eventType: "Event C",
                 description: "Customer requests gift packaging.",
-                cost: 0,
+                cost: 560,
                 image: "https://via.placeholder.com/150",
             },
             {
-                orderId: "ORD004",
+                RequestID: "ORD004",
                 orderPlacedDate: "2024-12-24",
                 eventType: "Event D",
                 description: "Customer requests a custom design.",
-                cost: 0,
+                cost: 560,
                 image: "https://via.placeholder.com/150",
             },
         ];
@@ -47,19 +48,16 @@ const MarketPlace = () => {
 
     const handleSearch = (event) => setSearchTerm(event.target.value);
 
-    const handleCostChange = (orderId, newCost) => {
-        setOrders((orders) =>
-            orders.map((order) =>
-                order.orderId === orderId ? { ...order, cost: newCost } : order
-            )
-        );
-    };
 
-    const handleAccept = (orderId) => alert(`Order ${orderId} Accepted`);
-    const handleReject = (orderId) => alert(`Order ${orderId} Rejected`);
+
+    const handleAccept = (RequestID) => {
+        alert(`Order ${RequestID} Accepted`)
+        navigate(`/checkout/${RequestID}`);
+    };
+    const handleReject = (RequestID) => alert(`Order ${RequestID} Rejected`);
 
     const filteredOrders = orders.filter((order) =>
-        order.orderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.RequestID.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.eventType.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -109,33 +107,31 @@ const MarketPlace = () => {
 
                     <div className="mt-6 grid grid-cols-2 gap-6">
                         {filteredOrders.map((order) => (
-                            <div className="bg-white rounded-lg shadow-md" key={order.orderId}>
+                            <div className="bg-white rounded-lg shadow-md" key={order.RequestID}>
                                 <img
                                     src={order.image}
-                                    alt={`Order ${order.orderId}`}
+                                    alt={`Order ${order.RequestID}`}
                                     className="w-full h-40 object-cover rounded-t-lg"
                                 />
                                 <div className="p-6">
-                                    <h2 className="text-lg font-bold text-gray-700">Order ID: {order.orderId}</h2>
+                                    <h2 className="text-lg font-bold text-gray-700">RequestID: {order.RequestID}</h2>
                                     <p className="text-sm text-gray-600">Order Placed: {order.orderPlacedDate}</p>
                                     <p className="text-sm text-gray-600">Event Type: {order.eventType}</p>
                                     <p className="text-sm text-gray-600">Description: {order.description}</p>
                                     <div className="mt-4 flex items-center space-x-4">
                                         <input
-                                            type="number"
                                             value={order.cost}
-                                            onChange={(e) => handleCostChange(order.orderId, e.target.value)}
                                             className="w-28 p-2 border rounded-md"
                                             placeholder="Cost"
                                         />
                                         <button
-                                            onClick={() => handleAccept(order.orderId)}
+                                            onClick={() => handleAccept(order.RequestID)}
                                             className="bg-green-500 text-white px-6 py-2 rounded-md"
                                         >
                                             Accept
                                         </button>
                                         <button
-                                            onClick={() => handleReject(order.orderId)}
+                                            onClick={() => handleReject(order.RequestID)}
                                             className="bg-red-500 text-white px-6 py-2 rounded-md"
                                         >
                                             Reject

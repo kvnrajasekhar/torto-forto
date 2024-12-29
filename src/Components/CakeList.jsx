@@ -24,7 +24,7 @@ function CakeList() {
         Christmas: [
             { id: 6, name: "Christmas Special", bakeryName: "Holiday Bakery", location: "Seattle", price: 40, image: "https://via.placeholder.com/150" },
         ],
-        Halloween: [
+        Hallowen: [
             { id: 6, name: "Christmas Special", bakeryName: "Holiday Bakery", location: "Seattle", price: 40, image: "https://via.placeholder.com/150" },
         ],
         NewYear: [

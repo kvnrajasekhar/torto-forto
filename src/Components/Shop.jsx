@@ -21,6 +21,7 @@ const Shop = () => {
   const [generatedImage, setGeneratedImage] = useState(null);
   const [loading, setLoading] = useState(false); // Loading state for buttons
   const [isToppingsDropdownOpen, setIsToppingsDropdownOpen] = useState(false);
+  const [dalleimage, setDalleImage] = useState(null);
 
   const fetchCakes = async (appliedFilters) => {
     console.log("Fetching cakes with filters:", appliedFilters);
@@ -77,6 +78,7 @@ const Shop = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ prompt })
+        
       });
 
       if (!response.ok) {
@@ -84,9 +86,11 @@ const Shop = () => {
       }
       const imageData = await response.json();
       console.log(imageData);
+      setGeneratedImage(imageData.imageUrl);
+      setDalleImage(imageData);
 
       setImage(<img src={imageData.imageUrl} alt="Generated Cake" />);
-
+      setLoading(false);
     } catch (error) {
       console.error('Error generating image:', error);
     }
@@ -104,7 +108,7 @@ const Shop = () => {
   };
 
   const handleContinue = () => {
-    navigate("/account/marketplace"); // Redirect to market section
+    navigate("/cakeitem/", { state: { dalleimage } });
   };
 
   return (
