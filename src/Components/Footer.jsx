@@ -50,7 +50,7 @@ const Footer = () => {
                         />
                         <button
                             type="submit"
-                            className="w-full py-2 text-sm font-semibold text-white bg-[#b66] rounded-md hover:bg-white hover:"
+                            className="w-full py-2 text-sm font-semibold text-white bg-[#b66] rounded-md hover:bg-white hover:text-[#b66]"
                         >
                             SIGN UP
                         </button>
