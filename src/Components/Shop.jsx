@@ -57,6 +57,36 @@ const Shop = () => {
     }
   };
 
+
+  const handleGenerateImage = async () => {
+    console.log("Generating AI image...");
+    // Logic to generate image based on filters
+  try {
+    // Construct prompt from all filters
+    // const prompt = `A ${filters.cakeWeight} ${filters.cakeShape} ${filters.tiers} cake for ${filters.eventType} made with ${filters.breadType} and ${filters.flavor} flavor, decorated with ${filters.toppings.join(", ")}. ${filters.preferredText ? `Text on cake: ${filters.preferredText}` : ""} ${imagePrompt}`.trim();
+    const prompt = `A realistic and practical cake design for ${filters.eventType} , made with ${filters.breadType}. The cake should weigh ${filters.cakeWeight} kg and have a ${filters.cakeShape}. It will have a  ${filters.flavor}flavor, with ${filters.tiers} tiers, and the Preferred text on the cake is  ${filters.preferredText ? `${filters.preferredText}`:""} written on it. Add ${filters.toppings.join(", ")} as decorations. Include the following custom details: ${imagePrompt}. The design should be simple enough for a baker to create while matching the given requirements.`;
+    const response = await fetch('http://localhost:5555/image/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ prompt })
+    });
+
+    if (!response.ok) {
+      throw new Error('Image generation failed');
+    }
+    const imageData = await response.json();
+    console.log(imageData);
+    
+    setImage(<img src={imageData.imageUrl} alt="Generated Cake" />);
+
+  } catch (error) {
+    console.error('Error generating image:', error);
+  }
+        
+  };
+
   const handleContinue = () => {
     navigate("/market"); // Redirect to market section
   };
@@ -170,7 +200,7 @@ const Shop = () => {
           />
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-r"
-            onClick={()=>{}}
+            onClick={handleGenerateImage}
           >
             Generate Image
           </button>
@@ -191,7 +221,7 @@ const Shop = () => {
         <div className="flex gap-4 mt-6">
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleRegenerateImage}
+            onClick={handleGenerateImage}
           >
             Regenerate
           </button>
