@@ -1,5 +1,5 @@
 import  { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 
 const CakeItem = () => {
@@ -12,8 +12,8 @@ const CakeItem = () => {
     const [imageUrl, setImageUrl] = useState('');
 
     
-
-    fetch('http://localhost:5555/cakerequest/:id', {
+    const id = useParams().id;
+    fetch(`http://localhost:5555/cakerequest/${id}`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
@@ -57,11 +57,11 @@ const CakeItem = () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Cake Item</h1>
-            {generatedImage && (
+           
                 <div className="mb-4">
                     <img src={imageUrl} alt="Generated Cake" className="w-full h-auto" />
                 </div>
-            )}
+
 
             <div className="mb-4">
                 <label className="block font-medium mb-2">Description for Making Process</label>
@@ -74,11 +74,9 @@ const CakeItem = () => {
             </div>
             <div className="mb-4">
                 <label className="block font-medium mb-2">Previous Prompt Given for Image Generation</label>
-                <textarea
-                    className="w-full border border-gray-300 p-2 rounded"
-                    rows="4"
-                    value={prompt}
-                />
+                <h2 className="w-full border border-gray-300 p-2 rounded"
+                    >{prompt}
+                </h2>
             </div>
             <button
                 className="bg-blue-500 text-white px-4 py-2 rounded"
