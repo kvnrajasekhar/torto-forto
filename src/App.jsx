@@ -38,6 +38,7 @@ function App() {
           <Route path="/cakes/:featureType" element={<CakeListWrapper />} />
           <Route path="/checkout/:RequestID" element={<Checkout />} />
           <Route path='/cakeitem/:id' element={<CakeItem /> } />
+          <Route path="/offers/:id" element={<Offers />} />
         </Routes>
       </div>
     </Router>

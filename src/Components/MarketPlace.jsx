@@ -10,22 +10,13 @@ const MarketPlace = () => {
 
     useEffect(() => {
         const fetchOrders = async () => {
-            const BASE_URL = import.meta.env.BASE_URL;
+            const BASE_URL = "http://localhost:5555/";
             try {
-                const response = await fetch(`${BASE_URL}/cakereq`); // Update with your API endpoint
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                const parsedOrders = data.map((order) => ({
-                    RequestID: order._id,
-                    image: `/api/images/${order.imageId}`,
-                    prompt: order.prompt,
-                    description: order.description,
-                    status: order.status,
-                    createdAt: new Date(order.createdAt).toLocaleDateString(),
-                }));
-                setOrders(parsedOrders);
+                const response = await fetch(`${BASE_URL}cakerequest/user`).then((res) => res.json()).then((data) => {
+                    console.log(data);
+                    setOrders(data);
+                    console.log(orders);
+                });
             } catch (error) {
                 console.error("Error fetching orders:", error);
             }
@@ -36,17 +27,28 @@ const MarketPlace = () => {
 
     const handleSearch = (event) => setSearchTerm(event.target.value);
 
-    const handleAccept = (RequestID) => {
-        alert(`Order ${RequestID} Accepted`);
-        navigate(`/checkout/${RequestID}`);
+    const handleAccept = (_id) => {
+        navigate(`/offers/${_id}`);
     };
 
-    const handleReject = (RequestID) => alert(`Order ${RequestID} Rejected`);
+    const handleReject = (_id) => {
+        fetch(`http://localhost:5555/cakerequest/${_id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+                const newOrders = orders.filter((order) => order._id !== _id);
+                setOrders(newOrders);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
 
-    const filteredOrders = orders.filter((order) =>
-        order.RequestID.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.prompt.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     const menuItems = [
         { name: "Profile", path: "/account/profile" },
@@ -93,31 +95,31 @@ const MarketPlace = () => {
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-6">
-                        {filteredOrders.map((order) => (
-                            <div className="bg-white rounded-lg shadow-md" key={order.RequestID}>
+                        {orders.map((order) => (
+                            <div className="bg-white rounded-lg shadow-md" key={order._id}>
                                 <img
-                                    src={order.image}
-                                    alt={`Order ${order.RequestID}`}
+                                    src={order.imageUrl}
+                                    alt={`Order ${order._id}`}
                                     className="w-full h-40 object-cover rounded-t-lg"
                                 />
                                 <div className="p-6">
-                                    <h2 className="text-lg font-bold text-gray-700">RequestID: {order.RequestID}</h2>
+                                    <h2 className="text-lg font-bold text-gray-700">_id: {order._id}</h2>
                                     <p className="text-sm text-gray-600">Prompt: {order.prompt}</p>
                                     <p className="text-sm text-gray-600">Description: {order.description}</p>
                                     <p className="text-sm text-gray-600">Status: {order.status}</p>
                                     <p className="text-sm text-gray-600">Created At: {order.createdAt}</p>
                                     <div className="mt-4 flex items-center space-x-4">
                                         <button
-                                            onClick={() => handleAccept(order.RequestID)}
+                                            onClick={() => handleAccept(order._id)}
                                             className="bg-green-500 text-white px-6 py-2 rounded-md"
                                         >
-                                            Accept
+                                            Offers
                                         </button>
                                         <button
-                                            onClick={() => handleReject(order.RequestID)}
+                                            onClick={() => handleReject(order._id)}
                                             className="bg-red-500 text-white px-6 py-2 rounded-md"
                                         >
-                                            Reject
+                                            Withdraw
                                         </button>
                                     </div>
                                 </div>
