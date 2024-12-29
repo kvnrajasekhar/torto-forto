@@ -54,12 +54,41 @@ const Shop = () => {
     }
   };
 
-  const handleGenerateImage = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setImage(<img src="generated-image-placeholder.jpg" alt="Generated Cake" />);
-      setLoading(false);
-    }, 2000); // Simulate API call delay
+// Simulate API call delay
+
+
+  const handleGenerateImage = async () => {
+    console.log("Generating AI image...");
+    // Logic to generate image based on filters
+  try {
+    // Construct prompt from all filters
+    // const prompt = `A ${filters.cakeWeight} ${filters.cakeShape} ${filters.tiers} cake for ${filters.eventType} made with ${filters.breadType} and ${filters.flavor} flavor, decorated with ${filters.toppings.join(", ")}. ${filters.preferredText ? `Text on cake: ${filters.preferredText}` : ""} ${imagePrompt}`.trim();
+    const prompt = `A realistic and practical cake design for ${filters.eventType} , made with ${filters.breadType}. The cake should weigh ${filters.cakeWeight} kg and have a ${filters.cakeShape}. It will have a  ${filters.flavor}flavor, with ${filters.tiers} tiers, and the Preferred text on the cake is  ${filters.preferredText ? `${filters.preferredText}`:""} written on it. Add ${filters.toppings.join(", ")} as decorations. Include the following custom details: ${imagePrompt}. The design should be simple enough for a baker to create while matching the given requirements.`;
+    const response = await fetch('http://user.frostiq.me/image/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ prompt })
+    });
+
+    if (!response.ok) {
+      throw new Error('Image generation failed');
+    }
+    const imageData = await response.json();
+    console.log(imageData);
+    
+    setImage(<img src={imageData.imageUrl} alt="Generated Cake" />);
+
+  } catch (error) {
+    console.error('Error generating image:', error);
+  }
+        
+  };
+
+  const handleContinue = () => {
+    navigate("/market"); // Redirect to market section
+
   };
 
   const handleRegenerateImage = () => {
@@ -220,24 +249,54 @@ const Shop = () => {
             )}
           </div>
 
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4 mt-6">
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={handleRegenerateImage}
-            >
-              Regenerate
-            </button>
-            <button
-              className="bg-green-500 text-white px-4 py-2 rounded"
-              onClick={handleContinue}
-            >
-              Continue
-            </button>
-          </div>
-        </main>
-      </div>
+        {/* Input and Image Placeholder */}
+        <div className="mb-4 flex items-center">
+          <input
+            type="text"
+            className="flex-grow border border-gray-300 p-2 rounded-l"
+            placeholder="Enter prompt for image"
+            value={imagePrompt}
+            onChange={(e) => setImagePrompt(e.target.value)}
+          />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-r"
+            onClick={handleGenerateImage}
+          >
+            Generate Image
+          </button>
+        </div>
+
+        {/* Image Placeholder */}
+        <div className="mb-6">
+          {image ? (
+            <div className="border p-4 rounded shadow-sm">{image}</div>
+          ) : (
+            <div className="border p-4 rounded shadow-sm">
+              <p>Image will be generated here...</p>
+            </div>
+          )}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-4 mt-6">
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={handleGenerateImage}
+          >
+            Regenerate
+          </button>
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded"
+            onClick={handleContinue}
+          >
+            Continue
+          </button>
+        </div>
+      </main>
+    </div>
+
     </>
   );
 };

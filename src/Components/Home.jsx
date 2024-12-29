@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import FeaturedSection from './FeaturedSection';
+import '../index.css'
 
 function Home() {
     const [location, setLocation] = useState(null);
