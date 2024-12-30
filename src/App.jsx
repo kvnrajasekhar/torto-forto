@@ -28,7 +28,7 @@ function App() {
       <div>
         {isAuthenticated && <Navbar />}
         <Routes>
-          {!isAuthenticated ? (
+          {isAuthenticated ? (
             // Routes accessible when not authenticated
             <>
               <Route path="/" element={<Login />} />

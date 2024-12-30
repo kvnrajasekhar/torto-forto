@@ -22,7 +22,7 @@ const Login = () => {
       return
     }
 
-    const backendUrl = "http://localhost:5555"
+    const backendUrl = "http://user.frostiq.me"
 
     axios
       .post(

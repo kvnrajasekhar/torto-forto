@@ -15,7 +15,7 @@ const SignupPage = () => {
         e.preventDefault();
         // Logic for handling signup (validation and API call)
         console.log("Signup with:", username, name, phoneNumber, email, password);
-        const baseUrl = "http://localhost:5555"
+        const baseUrl = "http://user.frostiq.me"
 
         try {
             const response = await fetch(`${baseUrl}/auth/signup`, {
