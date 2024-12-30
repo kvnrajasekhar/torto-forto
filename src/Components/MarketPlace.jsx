@@ -10,7 +10,7 @@ const MarketPlace = () => {
 
     useEffect(() => {
         const fetchOrders = async () => {
-            const BASE_URL = "http://localhost:5555/";
+            const BASE_URL = "http://user.frostiq.me";
             try {
                 const response = await fetch(`${BASE_URL}cakerequest/user`).then((res) => res.json()).then((data) => {
                     console.log(data);
@@ -32,7 +32,7 @@ const MarketPlace = () => {
     };
 
     const handleReject = (_id) => {
-        fetch(`http://localhost:5555/cakerequest/${_id}`, {
+        fetch(`http://user.frostiq.me/cakerequest/${_id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

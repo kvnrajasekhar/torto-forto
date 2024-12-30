@@ -13,7 +13,7 @@ const CakeItem = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch(`http://localhost:5555/cakerequest/${id}`, {
+        fetch(`http://user.frostiq.me/cakerequest/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const CakeItem = () => {
             return;
         }
 
-        fetch('http://localhost:5555/cakerequest/add', {
+        fetch('http://user.frostiq.me/cakerequest/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
