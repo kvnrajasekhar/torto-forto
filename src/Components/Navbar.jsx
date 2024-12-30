@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+import { useContext } from 'react';
 
 function Navbar({ location, error, onLocationChange }) {
+    const { logout } = useContext(UserContext)
     return (
         <nav className="bg-white shadow-md fixed top-0 w-full z-50">
             <div className="max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -15,8 +18,8 @@ function Navbar({ location, error, onLocationChange }) {
                         ) : error ? (
                             <span className="text-red-500">{error}</span>
                         ) : (
-                            <button 
-                                onClick={onLocationChange} 
+                            <button
+                                onClick={onLocationChange}
                                 className="bg-[#d66] text-white py-1 px-3 rounded">
                                 Enter Location Manually
                             </button>
@@ -29,6 +32,7 @@ function Navbar({ location, error, onLocationChange }) {
                         <Link to="/account" className="nav-link font-montserrat">Account</Link>
                         <Link to="/cart" className="nav-link font-montserrat">Cart</Link>
                         <Link to="/shop" className="nav-link font-montserrat">Shop</Link>
+                        <button className="nav-link font-montserrat bg-red" onClick={() => logout()}>Logout</button>
                     </div>
                 </div>
             </div>

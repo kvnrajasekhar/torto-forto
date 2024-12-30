@@ -110,7 +110,7 @@ const Shop = () => {
   const handleContinue = () => {
     console.log("Continue to cake item page with image:", dalleimage);
     if (dalleimage) {
-      navigate(`/cakeitem/${dalleimage}`, { state: { dalleimage } });
+      navigate(`/cakes/${dalleimage}`, { state: { dalleimage } });
     } else {
       alert("No image available to proceed");
     }
