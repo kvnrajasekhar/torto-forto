@@ -37,7 +37,7 @@ function CakeList() {
         const fetchCakes = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:5000/api/cakes?type=${featureType}`);
+                const response = await fetch(`http://user.frostiq.me/api/cakes?type=${featureType}`);
                 if (response.ok) {
                     const data = await response.json();
                     setCakes(data);

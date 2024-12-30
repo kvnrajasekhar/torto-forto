@@ -14,7 +14,7 @@ const Orders = () => {
     // Fetch orders dynamically based on user ID
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`http://localhost:5555/api/orders/${userId}`); // Replace with actual endpoint
+        const response = await fetch(`http://user.frostiq.me/api/orders/${userId}`); // Replace with actual endpoint
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }
